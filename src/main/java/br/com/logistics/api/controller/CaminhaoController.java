@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("caminhoes")
@@ -22,28 +24,35 @@ public class CaminhaoController {
 
     @PostMapping
     @Transactional
-    public void cadastrar(@RequestBody @Valid CaminhaoDTO dados) {
-        repository.save(new Caminhao(dados));
+    public ResponseEntity cadastrar(@RequestBody @Valid CaminhaoDTO dados, UriComponentsBuilder uriComponentsBuilder) {
+        var caminhao = repository.save(new Caminhao(dados));
+        var uri = uriComponentsBuilder.path("/caminhoes/{id}").buildAndExpand(caminhao.getId()).toUri();
+        return ResponseEntity.created(uri).body(new DadosListagemCaminhao(caminhao));
     }
 
 
     @GetMapping
-    public Page<DadosListagemCaminhao> listar(@PageableDefault(size = 10, sort = {"placa"})Pageable paginacao) {
-        return repository.findAllByAtivoTrue(paginacao).map(DadosListagemCaminhao::new);
+    public ResponseEntity<Page<DadosListagemCaminhao>> listar(@PageableDefault(size = 10, sort = {"placa"}) Pageable paginacao) {
+        var page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemCaminhao::new);
+        return ResponseEntity.ok(page);
     }
 
     @PutMapping
     @Transactional
-    public void atualizar(@RequestBody @Valid DadosAtualizacaoCaminhao dados){
+    public ResponseEntity<DadosListagemCaminhao> atualizar(@RequestBody @Valid DadosAtualizacaoCaminhao dados) {
         var caminhao = repository.getReferenceById(dados.id());
         caminhao.atualizarInformacoesDoCaminhao(dados);
+
+        return ResponseEntity.ok(new DadosListagemCaminhao(caminhao));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void excluir(@PathVariable Long id){
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
         var caminhao = repository.getReferenceById(id);
         caminhao.excluir();
+
+        return ResponseEntity.noContent().build();
     }
 }
 
