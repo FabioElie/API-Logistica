@@ -24,7 +24,7 @@ public class CaminhaoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid CaminhaoDTO dados, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<DadosListagemCaminhao> cadastrar(@RequestBody @Valid CaminhaoDTO dados, UriComponentsBuilder uriComponentsBuilder) {
         var caminhao = repository.save(new Caminhao(dados));
         var uri = uriComponentsBuilder.path("/caminhoes/{id}").buildAndExpand(caminhao.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosListagemCaminhao(caminhao));
@@ -32,7 +32,7 @@ public class CaminhaoController {
 
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemCaminhao>> listar(@PageableDefault(size = 10, sort = {"placa"}) Pageable paginacao) {
+    public ResponseEntity<Page<DadosListagemCaminhao>> listar(@PageableDefault(size = 20, sort = {"placa"}) Pageable paginacao) {
         var page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemCaminhao::new);
         return ResponseEntity.ok(page);
     }

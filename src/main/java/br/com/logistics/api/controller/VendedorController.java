@@ -25,14 +25,14 @@ public class VendedorController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid VendedorDTO dados, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<DadosDetalhamentoVendedor> cadastrar(@RequestBody @Valid VendedorDTO dados, UriComponentsBuilder uriComponentsBuilder) {
         var vendedor = repository.save(new Vendedor(dados));
         var uri = uriComponentsBuilder.path("/vendedores/{id}").buildAndExpand(vendedor).toUri();
-        return ResponseEntity.created(uri).body(vendedor);
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoVendedor(vendedor));
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemVendedores>> listar(@PageableDefault(size = 10, sort = {"nome"})Pageable paginacao) {
+    public ResponseEntity<Page<DadosListagemVendedores>> listar(@PageableDefault(size = 20, sort = {"nome"})Pageable paginacao) {
         var page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemVendedores::new);
         return ResponseEntity.ok(page);
     }
@@ -47,7 +47,7 @@ public class VendedorController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity excluir(@PathVariable Long id){
+    public ResponseEntity<Void> excluir(@PathVariable Long id){
         var vendedor = repository.getReferenceById(id);
         vendedor.excluir();
         return ResponseEntity.noContent().build();

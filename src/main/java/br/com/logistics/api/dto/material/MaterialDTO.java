@@ -10,10 +10,10 @@ public record MaterialDTO(
         @NotBlank
         String nome,
         @NotNull
-        @DecimalMin(value = "0.30", inclusive = true, message = "A densidade deve ser maior ou igual a 0.30")
+        @DecimalMin(value = "0.30", message = "A densidade deve ser maior ou igual a 0.30")
         BigDecimal densidade,
         @NotNull
-        @DecimalMin(value = "0.00", inclusive = true, message = "O preço deve ser maior ou igual a 0.00")
+        @DecimalMin(value = "0.00", message = "O preço deve ser maior ou igual a 0.00")
         BigDecimal preco)
         {
 }

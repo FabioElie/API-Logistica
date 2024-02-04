@@ -24,14 +24,14 @@ public class MaterialController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid MaterialDTO dados, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<DadosListagemMateriais> cadastrar(@RequestBody @Valid MaterialDTO dados, UriComponentsBuilder uriComponentsBuilder) {
         var material = repository.save(new Material(dados));
         var uri = uriComponentsBuilder.path("/materiais/{id}").buildAndExpand(material).toUri();
-        return  ResponseEntity.created(uri).body(material);
+        return  ResponseEntity.created(uri).body(new DadosListagemMateriais(material));
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemMateriais>> listar(@PageableDefault(size = 10, sort = {"nome"})Pageable paginacao) {
+    public ResponseEntity<Page<DadosListagemMateriais>> listar(@PageableDefault(size = 20, sort = {"nome"})Pageable paginacao) {
         var page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemMateriais::new);
         return ResponseEntity.ok(page);
     }
@@ -46,7 +46,7 @@ public class MaterialController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity excluir(@PathVariable Long id){
+    public ResponseEntity<Void> excluir(@PathVariable Long id){
         var material = repository.getReferenceById(id);
         material.excluir();
         return ResponseEntity.noContent().build();

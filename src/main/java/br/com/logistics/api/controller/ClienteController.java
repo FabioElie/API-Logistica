@@ -25,15 +25,15 @@ public class ClienteController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid ClienteDTO dados, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<DadosDetalhamentoCliente> cadastrar(@RequestBody @Valid ClienteDTO dados, UriComponentsBuilder uriComponentsBuilder) {
         var cliente = repository.save(new Cliente(dados));
         var uri = uriComponentsBuilder.path("/clientes./{id}").buildAndExpand(cliente.getId()).toUri();
-        return ResponseEntity.created(uri).body(cliente);
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoCliente(cliente));
 
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemClientes>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
+    public ResponseEntity<Page<DadosListagemClientes>> listar(@PageableDefault(size = 20, sort = {"nome"}) Pageable paginacao) {
         var page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemClientes::new);
         return ResponseEntity.ok(page);
     }
