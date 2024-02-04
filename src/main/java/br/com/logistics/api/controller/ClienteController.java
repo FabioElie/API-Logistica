@@ -2,6 +2,7 @@ package br.com.logistics.api.controller;
 
 import br.com.logistics.api.dto.cliente.ClienteDTO;
 import br.com.logistics.api.dto.cliente.DadosAtualizacaoCliente;
+import br.com.logistics.api.dto.cliente.DadosDetalhamentoCliente;
 import br.com.logistics.api.dto.cliente.DadosListagemClientes;
 import br.com.logistics.api.entity.Cliente;
 import br.com.logistics.api.repository.ClienteRepository;
@@ -10,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("clientes")
@@ -22,26 +25,32 @@ public class ClienteController {
 
     @PostMapping
     @Transactional
-    public void cadastrar(@RequestBody @Valid ClienteDTO dados) {
-        repository.save(new Cliente(dados));
+    public ResponseEntity cadastrar(@RequestBody @Valid ClienteDTO dados, UriComponentsBuilder uriComponentsBuilder) {
+        var cliente = repository.save(new Cliente(dados));
+        var uri = uriComponentsBuilder.path("/clientes./{id}").buildAndExpand(cliente.getId()).toUri();
+        return ResponseEntity.created(uri).body(cliente);
+
     }
 
     @GetMapping
-    public Page<DadosListagemClientes> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
-        return repository.findAllByAtivoTrue(paginacao).map(DadosListagemClientes::new);
+    public ResponseEntity<Page<DadosListagemClientes>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
+        var page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemClientes::new);
+        return ResponseEntity.ok(page);
     }
 
     @PutMapping
     @Transactional
-    public void atualizar(@RequestBody @Valid DadosAtualizacaoCliente dados){
+    public ResponseEntity<DadosDetalhamentoCliente> atualizar(@RequestBody @Valid DadosAtualizacaoCliente dados) {
         var cliente = repository.getReferenceById(dados.id());
         cliente.atualizarInformacoesDoCliente(dados);
+        return ResponseEntity.ok(new DadosDetalhamentoCliente(cliente));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void excluir(@PathVariable Long id){
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
         var cliente = repository.getReferenceById(id);
         cliente.excluir();
+        return ResponseEntity.noContent().build();
     }
 }
