@@ -52,5 +52,11 @@ public class MaterialController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<DadosListagemMateriais> detalharPorId(@PathVariable Long id) {
+        var material = repository.getReferenceById(id);
+        return ResponseEntity.ok(new DadosListagemMateriais(material));
+    }
+
 
 }

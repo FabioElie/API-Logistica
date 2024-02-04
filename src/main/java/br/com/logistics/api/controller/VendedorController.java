@@ -32,14 +32,14 @@ public class VendedorController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemVendedores>> listar(@PageableDefault(size = 20, sort = {"nome"})Pageable paginacao) {
+    public ResponseEntity<Page<DadosListagemVendedores>> listar(@PageableDefault(size = 20, sort = {"nome"}) Pageable paginacao) {
         var page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemVendedores::new);
         return ResponseEntity.ok(page);
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity<DadosDetalhamentoVendedor> atualizar(@RequestBody @Valid DadosAtualizacaoVendedor dados){
+    public ResponseEntity<DadosDetalhamentoVendedor> atualizar(@RequestBody @Valid DadosAtualizacaoVendedor dados) {
         var vendedor = repository.getReferenceById(dados.id());
         vendedor.atualizarInformacoesDoVendedor(dados);
         return ResponseEntity.ok(new DadosDetalhamentoVendedor(vendedor));
@@ -47,10 +47,16 @@ public class VendedorController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<Void> excluir(@PathVariable Long id){
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
         var vendedor = repository.getReferenceById(id);
         vendedor.excluir();
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DadosDetalhamentoVendedor> detalharPorId(@PathVariable Long id) {
+        var vendedor = repository.getReferenceById(id);
+        return ResponseEntity.ok(new DadosDetalhamentoVendedor(vendedor));
     }
 
 }

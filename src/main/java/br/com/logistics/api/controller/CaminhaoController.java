@@ -54,5 +54,11 @@ public class CaminhaoController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DadosListagemCaminhao> detalharPorId(@PathVariable Long id) {
+        var caminhao = repository.getReferenceById(id);
+        return ResponseEntity.ok(new DadosListagemCaminhao(caminhao));
+    }
 }
 
