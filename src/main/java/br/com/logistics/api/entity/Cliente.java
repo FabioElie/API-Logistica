@@ -22,7 +22,7 @@ public class Cliente {
     private String nome;
     private String email;
     private String telefone;
-    private String cnpj;
+    private String cnpjCpf;
     private Boolean ativo;
 
     @Embedded
@@ -32,7 +32,7 @@ public class Cliente {
         this.nome = dados.nome();
         this.email = dados.email();
         this.telefone = dados.telefone();
-        this.cnpj = dados.cnpj();
+        this.cnpjCpf = dados.cnpjCpf();
         this.endereco = new Endereco(dados.endereco());
         this.ativo = true;
     }

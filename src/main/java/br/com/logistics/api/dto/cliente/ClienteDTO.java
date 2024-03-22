@@ -16,8 +16,8 @@ public record ClienteDTO(
         @NotBlank
         String telefone,
         @NotBlank
-        @Pattern(regexp = "\\d{2}.\\d{3}.\\d{3}/\\d{4}-\\d{2}", message = "Formato de CNPJ errado, tente 01.123.123/0001-30")
-        String cnpj,
+        @Pattern(regexp = "(\\d{3}.\\d{3}.\\d{3}-\\d{2}|\\d{2}.\\d{3}.\\d{3}/\\d{4}-\\d{2})", message = "Formato de CNPJ ou CPF inválido, tente 123.456.789-01 ou 01.234.567/8901-23")
+        String cnpjCpf,
         @NotNull
         @Valid
         EnderecoDTO endereco) {

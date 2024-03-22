@@ -3,7 +3,7 @@ create table clientes(
     id bigint not null auto_increment,
     nome varchar(100) not null,
     email varchar(100) not null unique,
-    cnpj varchar(18) not null unique,
+    cnpj_cpf varchar(18) not null unique,
     telefone varchar(20) not null unique,
     numero varchar(20) not null,
     rua varchar(100) not null,
