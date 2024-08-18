@@ -4,8 +4,8 @@ import br.com.logistics.api.dto.cliente.ClienteDTO;
 import br.com.logistics.api.dto.cliente.DadosAtualizacaoCliente;
 import br.com.logistics.api.dto.cliente.DadosDetalhamentoCliente;
 import br.com.logistics.api.dto.cliente.DadosListagemClientes;
-import br.com.logistics.api.entity.Cliente;
-import br.com.logistics.api.repository.ClienteRepository;
+import br.com.logistics.api.entity.Clientes;
+import br.com.logistics.api.repository.ClientesRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,12 +21,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class ClienteController {
 
     @Autowired
-    private ClienteRepository repository;
+    private ClientesRepository repository;
 
     @PostMapping
     @Transactional
     public ResponseEntity<DadosDetalhamentoCliente> cadastrar(@RequestBody @Valid ClienteDTO dados, UriComponentsBuilder uriComponentsBuilder) {
-        var cliente = repository.save(new Cliente(dados));
+        var cliente = repository.save(new Clientes(dados));
         var uri = uriComponentsBuilder.path("/clientes./{id}").buildAndExpand(cliente.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosDetalhamentoCliente(cliente));
 

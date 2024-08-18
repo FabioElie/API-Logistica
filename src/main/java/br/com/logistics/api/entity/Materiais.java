@@ -14,9 +14,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Table(name = "materiais")
 @Entity(name = "Material")
-public class Material {
+public class Materiais {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +26,7 @@ public class Material {
     private Boolean ativo;
 
 
-    public Material(MaterialDTO dados) {
+    public Materiais(MaterialDTO dados) {
         this.nome = dados.nome();
         this.densidade = dados.densidade();
         this.preco = dados.preco();

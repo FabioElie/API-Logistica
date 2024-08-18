@@ -4,8 +4,8 @@ import br.com.logistics.api.dto.vendedor.DadosAtualizacaoVendedor;
 import br.com.logistics.api.dto.vendedor.DadosDetalhamentoVendedor;
 import br.com.logistics.api.dto.vendedor.DadosListagemVendedores;
 import br.com.logistics.api.dto.vendedor.VendedorDTO;
-import br.com.logistics.api.entity.Vendedor;
-import br.com.logistics.api.repository.VendedorRepository;
+import br.com.logistics.api.entity.Vendedores;
+import br.com.logistics.api.repository.VendedoresRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,12 +21,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class VendedorController {
 
     @Autowired
-    private VendedorRepository repository;
+    private VendedoresRepository repository;
 
     @PostMapping
     @Transactional
     public ResponseEntity<DadosDetalhamentoVendedor> cadastrar(@RequestBody @Valid VendedorDTO dados, UriComponentsBuilder uriComponentsBuilder) {
-        var vendedor = repository.save(new Vendedor(dados));
+        var vendedor = repository.save(new Vendedores(dados));
         var uri = uriComponentsBuilder.path("/vendedores/{id}").buildAndExpand(vendedor).toUri();
         return ResponseEntity.created(uri).body(new DadosDetalhamentoVendedor(vendedor));
     }

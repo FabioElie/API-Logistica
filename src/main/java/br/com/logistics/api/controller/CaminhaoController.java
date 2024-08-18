@@ -3,8 +3,8 @@ package br.com.logistics.api.controller;
 import br.com.logistics.api.dto.caminhao.CaminhaoDTO;
 import br.com.logistics.api.dto.caminhao.DadosAtualizacaoCaminhao;
 import br.com.logistics.api.dto.caminhao.DadosListagemCaminhao;
-import br.com.logistics.api.entity.Caminhao;
-import br.com.logistics.api.repository.CaminhaoRepository;
+import br.com.logistics.api.entity.Caminhoes;
+import br.com.logistics.api.repository.CaminhoesRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,12 +20,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class CaminhaoController {
 
     @Autowired
-    private CaminhaoRepository repository;
+    private CaminhoesRepository repository;
 
     @PostMapping
     @Transactional
     public ResponseEntity<DadosListagemCaminhao> cadastrar(@RequestBody @Valid CaminhaoDTO dados, UriComponentsBuilder uriComponentsBuilder) {
-        var caminhao = repository.save(new Caminhao(dados));
+        var caminhao = repository.save(new Caminhoes(dados));
         var uri = uriComponentsBuilder.path("/caminhoes/{id}").buildAndExpand(caminhao.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosListagemCaminhao(caminhao));
     }

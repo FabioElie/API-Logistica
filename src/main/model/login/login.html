@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet" href="login_style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+
+
+<header class="header">
+    <img class="header__logo" src="logo.png" alt="Logo da empresa">
+    <a class="header__link active" id="showLoginBtn" href="#">Login</a>
+    <a class="header__link" href="#" id="showSignupBtn">Cadastre-se</a>
+</header>
+
+<body>
+    <main>
+        
+        <!-- Login -->
+        <form class="form active" id="loginForm">
+            <div class="form__container">
+                <label>E-mail:</label>
+                <input type="email" id="email-login" required>
+                <label>Senha:</label>
+                <input type="password" id="password-login" required>
+                <div class="form__switch-container">
+                    <div class="form__switch-container--left">
+                        <label class="switch">
+                            <input class="switch__input"  type="checkbox" checked>
+                            <span class="switch__slider"></span>
+                        </label>
+                        <span class="switch__text">Lembrar minha senha</span>
+                    </div>
+                    <span class="form__switch-container--right">
+                        <a href="#">Esqueci a minha senha</a>
+                    </span>
+                </div>
+                <button class="button" id="loginBtn" type="button">Entrar</button>
+            </div>
+        </form>
+
+        <!-- Cadastro -->
+        <form class="form" id="signupForm">
+            <div class="form__container">
+                <h1>Cadastre-se</h1>
+                <p>Por favor, preencha o formulário para cadastrar uma conta.</p>
+                <hr>
+
+                <label>Nome completo:</label>
+                <input type="text" id="fullName" placeholder="Digite o seu nome completo" required>
+
+                <label>CEP:</label>
+                <input type="text" id="cep" placeholder="XXXXX-XXX" required>
+
+                <label>E-mail:</label>
+                <input type="email" id="email" placeholder="email@email.com" required>
+
+                <label>Senha:</label>
+                <input type="password" id="password" placeholder="Digite uma senha" required>
+
+                <label>Repita a senha:</label>
+                <input type="password" id="psw-repeat" placeholder="Digite a mesma senha do campo acima"
+                    required>
+
+                <div class="clearfix">
+                    <button type="button" class="button button--cancel button--half" id="cancelBtn">Limpar</button>
+                    <button type="submit" class="button button--signup button--half" id="submitBtn">Cadastrar</button>
+                </div>
+        </form>
+    </main>
+
+    <footer>
+        <p>Site criado por Fabio Elie</p>
+    </footer>
+    <script src="login_script.js">
+    </script>
+</body>
+
+</html>

@@ -12,9 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Table(name = "vendedores")
 @Entity(name = "Vendedor")
-public class Vendedor {
+public class Vendedores {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +25,7 @@ public class Vendedor {
     private Boolean ativo;
 
 
-    public Vendedor(VendedorDTO dados) {
+    public Vendedores(VendedorDTO dados) {
         this.nome = dados.nome();
         this.email = dados.email();
         this.telefone = dados.telefone();

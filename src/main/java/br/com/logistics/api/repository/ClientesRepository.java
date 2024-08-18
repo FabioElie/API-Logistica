@@ -1,13 +1,13 @@
 package br.com.logistics.api.repository;
 
-import br.com.logistics.api.entity.Vendedor;
+import br.com.logistics.api.entity.Clientes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface VendedorRepository extends JpaRepository<Vendedor, Long> {
+public interface ClientesRepository extends JpaRepository<Clientes, Long> {
 
-    Page<Vendedor> findAllByAtivoTrue(Pageable paginacao);
+    Page<Clientes> findAllByAtivoTrue(Pageable paginacao);
 
 
 

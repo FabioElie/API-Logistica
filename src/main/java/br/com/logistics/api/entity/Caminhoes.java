@@ -15,9 +15,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Table(name = "caminhoes")
 @Entity(name = "Caminhao")
-public class Caminhao {
+public class Caminhoes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +31,7 @@ public class Caminhao {
     private BigDecimal capacidade;
     private Boolean ativo;
 
-    public Caminhao(CaminhaoDTO dados) {
+    public Caminhoes(CaminhaoDTO dados) {
         this.nomeDoMotorista = dados.nomeDoMotorista();
         this.telefone = dados.telefone();
         this.cpf = dados.cpf();

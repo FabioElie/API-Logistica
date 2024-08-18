@@ -3,8 +3,8 @@ package br.com.logistics.api.controller;
 import br.com.logistics.api.dto.material.DadosAtualizacaoMaterial;
 import br.com.logistics.api.dto.material.DadosListagemMateriais;
 import br.com.logistics.api.dto.material.MaterialDTO;
-import br.com.logistics.api.entity.Material;
-import br.com.logistics.api.repository.MaterialRepository;
+import br.com.logistics.api.entity.Materiais;
+import br.com.logistics.api.repository.MateriaisRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,12 +20,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class MaterialController {
 
     @Autowired
-    private MaterialRepository repository;
+    private MateriaisRepository repository;
 
     @PostMapping
     @Transactional
     public ResponseEntity<DadosListagemMateriais> cadastrar(@RequestBody @Valid MaterialDTO dados, UriComponentsBuilder uriComponentsBuilder) {
-        var material = repository.save(new Material(dados));
+        var material = repository.save(new Materiais(dados));
         var uri = uriComponentsBuilder.path("/materiais/{id}").buildAndExpand(material).toUri();
         return  ResponseEntity.created(uri).body(new DadosListagemMateriais(material));
     }
