@@ -1,9 +1,12 @@
 package br.com.logistics.api.controller;
 
+import br.com.logistics.api.dto.caminhao.CaminhaoDTO;
+import br.com.logistics.api.dto.caminhao.DadosListagemCaminhao;
 import br.com.logistics.api.dto.cliente.ClienteDTO;
 import br.com.logistics.api.dto.cliente.DadosAtualizacaoCliente;
 import br.com.logistics.api.dto.cliente.DadosDetalhamentoCliente;
 import br.com.logistics.api.dto.cliente.DadosListagemClientes;
+import br.com.logistics.api.entity.Caminhoes;
 import br.com.logistics.api.entity.Clientes;
 import br.com.logistics.api.repository.ClientesRepository;
 import jakarta.validation.Valid;
@@ -15,6 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("clientes")
@@ -44,6 +50,24 @@ public class ClienteController {
         var cliente = repository.getReferenceById(dados.id());
         cliente.atualizarInformacoesDoCliente(dados);
         return ResponseEntity.ok(new DadosDetalhamentoCliente(cliente));
+    }
+
+    @PostMapping("/lista")
+    @Transactional
+    public ResponseEntity<List<DadosListagemClientes>> cadastrarClientes(@RequestBody @Valid List<ClienteDTO> dados, UriComponentsBuilder uriComponentsBuilder) {
+
+        List<Clientes> clientes = dados.stream()
+                .map(Clientes::new)
+                .map(c -> repository.save(c))
+                .toList();
+
+        List<DadosListagemClientes> listaClientes = clientes.stream()
+                .map(DadosListagemClientes::new)
+                .collect(Collectors.toList());
+
+        var uri = uriComponentsBuilder.path("/clientes").build().toUri();
+
+        return ResponseEntity.created(uri).body(listaClientes);
     }
 
     @DeleteMapping("/{id}")

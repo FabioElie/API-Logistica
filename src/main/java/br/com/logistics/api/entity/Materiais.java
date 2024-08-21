@@ -2,7 +2,10 @@ package br.com.logistics.api.entity;
 
 import br.com.logistics.api.dto.material.DadosAtualizacaoMaterial;
 import br.com.logistics.api.dto.material.MaterialDTO;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,7 +17,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Entity(name = "Material")
+@Entity
 public class Materiais {
 
     @Id

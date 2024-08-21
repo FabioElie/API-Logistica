@@ -16,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("vendedores")
 public class VendedorController {
@@ -36,6 +39,25 @@ public class VendedorController {
         var page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemVendedores::new);
         return ResponseEntity.ok(page);
     }
+
+    @PostMapping("/lista")
+    @Transactional
+    public ResponseEntity<List<DadosListagemVendedores>> cadastrarVendedores(@RequestBody @Valid List<VendedorDTO> dados, UriComponentsBuilder uriComponentsBuilder) {
+
+        List<Vendedores> vendedores = dados.stream()
+                .map(Vendedores::new)
+                .map(v -> repository.save(v))
+                .toList();
+
+        List<DadosListagemVendedores> listaVendedores = vendedores.stream()
+                .map(DadosListagemVendedores::new)
+                .collect(Collectors.toList());
+
+        var uri = uriComponentsBuilder.path("/vendedores").build().toUri();
+
+        return ResponseEntity.created(uri).body(listaVendedores);
+    }
+
 
     @PutMapping
     @Transactional

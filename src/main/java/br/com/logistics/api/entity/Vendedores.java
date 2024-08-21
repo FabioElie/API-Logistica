@@ -2,7 +2,10 @@ package br.com.logistics.api.entity;
 
 import br.com.logistics.api.dto.vendedor.DadosAtualizacaoVendedor;
 import br.com.logistics.api.dto.vendedor.VendedorDTO;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Entity(name = "Vendedor")
+@Entity
 public class Vendedores {
 
     @Id
